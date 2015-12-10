@@ -2,7 +2,7 @@ define(['es-ui'], function (app) {
 
 	'use strict';
 	app.value('baseUrl', '');
-	
+
 	return app.constant('urls', {
 		base: 'http://127.0.0.1:2113',
 		stats: '/stats',
@@ -18,7 +18,7 @@ define(['es-ui'], function (app) {
 			update: '/users/%s',	// %s - user name
 			remove: '/users/%s',	// %s - user name
 			disable: '/users/%s/command/disable',	// %s - user name
-			enable: '/users/%s/command/enable',		// %s - user name	
+			enable: '/users/%s/command/enable',		// %s - user name
 			resetPassword: '/users/%s/command/reset-password'	// %s - user name
 		},
 		query: {
@@ -66,7 +66,8 @@ define(['es-ui'], function (app) {
 		system:{
 			subsystems: '/sys/subsystems',
 			info: '/info',
-			options: '/info/options'
+			options: '/info/options',
+			scavengeStatus: '/info/scavenge-status'
 		},
 		competing:{
 			subscriptions: '/subscriptions',

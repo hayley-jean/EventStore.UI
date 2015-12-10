@@ -23,7 +23,11 @@ define(['./_module'], function (app) {
 					getSubsystems: function() {
                         var url = urlBuilder.build(urls.system.subsystems);
                         return $http.get(url);
-                    }
+                    },
+					scavengeStatus: function() {
+						var url = urlBuilder.build(urls.system.scavengeStatus);
+						return $http.get(url);
+					}
 				};
 		}];
 	});

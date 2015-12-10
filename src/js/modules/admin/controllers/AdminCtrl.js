@@ -3,8 +3,8 @@ define(['./_module'], function (app) {
     'use strict';
 
     return app.controller('AdminCtrl', [
-		'$scope', 'AdminService', 'MessageService',
-		function ($scope, adminService, msg) {
+		'$scope', 'AdminService', 'MessageService', 'poller',
+		function ($scope, adminService, msg, poller) {
 			$scope.subSystems = [];
 			adminService.getSubsystems()
 			.success(function(data){
@@ -23,7 +23,7 @@ define(['./_module'], function (app) {
 
 			$scope.shutdown = function ($event) {
 				stop($event);
-				var confirmation = msg.confirm('Are you sure you wish to shutdown the node?')
+				var confirmation = msg.confirm('Are you sure you wish to shutdown the node?');
 				if(!confirmation) {
 					return;
 				}
@@ -39,10 +39,31 @@ define(['./_module'], function (app) {
 
 				adminService.scavenge().then(function () {
 					msg.success('Scavenge initiated');
+                    // set up the polling service here.
+                    setupScavengeStatusPoller();
 				}, function () {
 					msg.failure('Scavenge failed');
 				});
 			};
+
+            function setupScavengeStatusPoller() {
+				var scavengeQuery = poller.create({
+			        interval: 1000,
+			        action: adminService.scavengeStatus,
+			        params: []
+			    });
+			    scavengeQuery.start();
+			    scavengeQuery.promise.then(null, null, function (response) {
+                    console.log('response', response);
+			        $scope.lastUpdatedTime = new Date();
+			        if (response.error) {
+			            $scope.errorMessage = 'couldn\'t connect to manager';
+			        } else {
+			            $scope.errorMessage = '';
+			            $scope.scavengeStatus = response.members;
+			        }
+			    });
+			}
 		}
 	]);
 });
