@@ -31,4 +31,25 @@
             </tbody>
         </table>
     </div>
+    <div class="container-right">
+        <table>
+            <thead>
+                <tr>
+                    <th>Scavenge Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-show="scavengeStatus">
+                    <td>
+                        {{scavengeStatus}}
+                    </td>
+                </tr>
+                <tr ng-hide="scavengeStatus">
+                    <td>
+                        <em>Scavenge is not running.</em>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

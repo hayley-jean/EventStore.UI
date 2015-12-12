@@ -54,13 +54,16 @@ define(['./_module'], function (app) {
 			    });
 			    scavengeQuery.start();
 			    scavengeQuery.promise.then(null, null, function (response) {
-                    console.log('response', response);
 			        $scope.lastUpdatedTime = new Date();
 			        if (response.error) {
 			            $scope.errorMessage = 'couldn\'t connect to manager';
 			        } else {
 			            $scope.errorMessage = '';
-			            $scope.scavengeStatus = response.members;
+			            $scope.scavengeStatus = response.statusMessage;
+                        if(response.complete) {
+                            msg.success('Scavenge completed');
+                            scavengeQuery.stop();
+                        }
 			        }
 			    });
 			}
