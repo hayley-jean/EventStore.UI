@@ -46,13 +46,16 @@ define(['./_module'], function (app) {
 				});
 			};
 
+            var scavengeQuery;
+            $scope.scavengeRunning = false;
             function setupScavengeStatusPoller() {
-				var scavengeQuery = poller.create({
+				scavengeQuery = poller.create({
 			        interval: 1000,
 			        action: adminService.scavengeStatus,
 			        params: []
 			    });
 			    scavengeQuery.start();
+                $scope.scavengeRunning = true;
 			    scavengeQuery.promise.then(null, null, function (response) {
 			        $scope.lastUpdatedTime = new Date();
 			        if (response.error) {
@@ -62,6 +65,7 @@ define(['./_module'], function (app) {
 			            $scope.scavengeStatus = response.statusMessage;
                         if(response.complete) {
                             msg.success('Scavenge completed');
+                            $scope.scavengeRunning = false;
                             scavengeQuery.stop();
                         }
 			        }
