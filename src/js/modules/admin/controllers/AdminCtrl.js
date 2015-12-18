@@ -49,6 +49,9 @@ define(['./_module'], function (app) {
             var scavengeQuery;
             $scope.scavengeRunning = false;
             function setupScavengeStatusPoller() {
+                if($scope.scavengeRunning) {
+                    return;
+                }
 				scavengeQuery = poller.create({
 			        interval: 1000,
 			        action: adminService.scavengeStatus,
@@ -57,18 +60,12 @@ define(['./_module'], function (app) {
 			    scavengeQuery.start();
                 $scope.scavengeRunning = true;
 			    scavengeQuery.promise.then(null, null, function (response) {
-			        $scope.lastUpdatedTime = new Date();
-			        if (response.error) {
-			            $scope.errorMessage = 'couldn\'t connect to manager';
-			        } else {
-			            $scope.errorMessage = '';
-			            $scope.scavengeStatus = response.statusMessage;
-                        if(response.complete) {
-                            msg.success('Scavenge completed');
-                            $scope.scavengeRunning = false;
-                            scavengeQuery.stop();
-                        }
-			        }
+		            $scope.scavengeMessages = response.statusMessages;
+                    if(response.complete) {
+                        msg.success('Scavenge completed');
+                        $scope.scavengeRunning = false;
+                        scavengeQuery.stop();
+                    }
 			    });
 			}
 		}
