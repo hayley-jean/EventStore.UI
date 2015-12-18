@@ -39,12 +39,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-show="scavengeStatus">
+                <tr ng-show="scavengeStatus || scavengeRunning">
                     <td>
-                        {{scavengeStatus}}
+                        {{scavengeStatus || 'Scavenging ...'}}
                     </td>
                 </tr>
-                <tr ng-hide="scavengeStatus">
+                <tr ng-hide="scavengeStatus || scavengeRunning">
                     <td>
                         <em>Scavenge is not running.</em>
                     </td>
